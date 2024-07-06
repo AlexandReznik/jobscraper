@@ -1,11 +1,11 @@
+import os
 from logging.config import fileConfig
-
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
-
 from alembic import context
 
-SQLALCHEMY_DATABASE_URL = "sqlite:///./job_scraper/job_scraper/app.db"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+SQLALCHEMY_DATABASE_URL = f"sqlite:///{os.path.join(BASE_DIR, '../../job_scraper/job_scraper/app.db')}"
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config

@@ -18,4 +18,3 @@ class DouSpider(scrapy.Spider):
         next_page = response.css('a.next::attr(href)').get()
         if next_page is not None:
             yield response.follow(next_page, self.parse)
-

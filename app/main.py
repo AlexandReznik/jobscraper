@@ -5,6 +5,7 @@ from app.jobs.endpoints import router as jobs_router
 # from app.users import models as user_models
 # from app.jobs import models as job_models
 
+Base.metadata.create_all(bind=engine)
 app = FastAPI()
 # user_models.Base.metadata.create_all(bind=engine)
 # job_models.Base.metadata.create_all(bind=engine)
