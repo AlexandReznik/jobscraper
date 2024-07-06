@@ -4,7 +4,6 @@ import os
 from ..items import JobScraperItem
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../')))
-from app.common.database import SessionLocal
 
 
 class DjinniSpider(scrapy.Spider):
@@ -20,6 +19,7 @@ class DjinniSpider(scrapy.Spider):
 
     def __init__(self):
         super(DjinniSpider, self).__init__()
+        from app.common.database import SessionLocal
         self.session = SessionLocal()
 
     def parse(self, response):
