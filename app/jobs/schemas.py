@@ -11,5 +11,9 @@ class JobBase(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 
+class JobCreate(JobBase):
+    pass
+
+
 class Job(JobBase):
     id: int

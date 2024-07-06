@@ -5,8 +5,7 @@ from sqlalchemy import pool
 
 from alembic import context
 
-
-SQLALCHEMY_DATABASE_URL = "sqlite:///./app.db"
+SQLALCHEMY_DATABASE_URL = "sqlite:///./job_scraper/job_scraper/app.db"
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config

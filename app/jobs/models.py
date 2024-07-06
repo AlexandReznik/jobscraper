@@ -10,7 +10,7 @@ class Job(Base):
     company = Column(String)
     location = Column(String)
     date_posted = Column(String)
-    url = Column(String)
+    url = Column(String, unique=True)
 
     def __repr__(self):
         return f"<Job(id={self.id}, title={self.title})>"
