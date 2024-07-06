@@ -70,3 +70,10 @@ def test_read_events_endpoint(mock_get_users: MagicMock,
     assert len(response.json()) == 2
     assert response.json()[0]["email"] == "user@example.com"
     assert response.json()[1]["email"] == "user1@example.com"
+
+
+@patch("app.jobs.crud.get_jobs")
+def test_read_jobs_endpoint(mock_get_jobs: MagicMock, client: TestClient, db_session: Session):
+    mock_get_jobs.return_value.status_code = 200
+    response = client.get("/jobs/all/")
+    assert response.status_code == 200
