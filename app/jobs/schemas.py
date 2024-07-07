@@ -1,10 +1,11 @@
 from pydantic import BaseModel, ConfigDict
+from typing import Optional
 
 
 class JobBase(BaseModel):
     title: str
     company: str
-    date_posted: str
+    date_posted: Optional[str]
     url: str
     location: str
 

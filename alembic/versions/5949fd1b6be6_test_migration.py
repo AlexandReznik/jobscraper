@@ -24,7 +24,8 @@ def upgrade() -> None:
         'users',
         sa.Column('id', sa.Integer, primary_key=True),
         sa.Column('email', sa.String, unique=True, index=True),
-        sa.Column('preferences', sa.String)
+        sa.Column('preferences', sa.String),
+        sa.Column('password', sa.String)
     )
 
     op.create_table(

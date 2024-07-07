@@ -26,11 +26,16 @@ class DjinniSpider(scrapy.Spider):
         job_items = response.css('li.list-jobs__item.job-list__item')
         
         for job in job_items:
-            company_name = job.css('div.job-list-item__pic a::text').get()
+            company_name = response.urljoin(job.css('div.job-list-item__pic a::attr(href)').get())
             job_title = job.css('a.job-list-item__link::text').get()
             job_link = response.urljoin(job.css('a.job-list-item__link::attr(href)').get())
-            date_posted = job.css('span.text-muted span[title]::text').get().strip()
-            job_location = job.css('span.location-text::text').get().strip()
+            date_posted = job.css('span.mr-2.nobr::attr(data-original-title)').get()
+            job_location = job.css('div.job-list-item__job-info::text').get()
+
+            company_name = company_name.strip() if company_name else None
+            job_title = job_title.strip() if job_title else None
+            date_posted = date_posted.strip() if date_posted else None
+            job_location = job_location.strip() if job_location else None 
 
             item = JobScraperItem(
                 title=job_title,
@@ -40,10 +45,7 @@ class DjinniSpider(scrapy.Spider):
                 location=job_location
             )
             yield item
-        next_page = response.css(
-            'ul.pagination.pagination_with_numbers '
-            'li.page-item a.page-link span.bi.bi-chevron-right.page-item--icon'
-        ).xpath('../@href').get()
+        next_page = response.css('ul.pagination li.page-item a.page-link::attr(href)').get()
         if next_page:
             next_page = response.urljoin(next_page)
             yield scrapy.Request(next_page, callback=self.parse)

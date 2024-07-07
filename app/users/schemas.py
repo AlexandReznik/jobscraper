@@ -9,8 +9,21 @@ class UserBase(BaseModel):
 
 
 class UserCreate(UserBase):
-    pass
+    password: str
+
+
+class UserPreferences(BaseModel):
+    preferences: str
 
 
 class User(UserBase):
     id: int
+
+
+class UserToken(BaseModel):
+    access_token: str
+    token_type: str
+
+
+class TokenData(BaseModel):
+    email: str
