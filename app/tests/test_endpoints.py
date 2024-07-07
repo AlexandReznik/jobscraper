@@ -43,12 +43,16 @@ def mock_users():
 
 @patch("app.users.crud.get_user_by_email")
 @patch("app.users.crud.create_user")
-def test_create_user(mock_create_user: MagicMock, mock_get_user_by_email: MagicMock, 
+@patch("app.common.security.get_password_hash")
+def test_create_user(mock_get_password_hash: MagicMock, mock_create_user: MagicMock, 
+                     mock_get_user_by_email: MagicMock, 
                      client: TestClient, db_session: Session, mock_user):
     mock_get_user_by_email.return_value = None
+    mock_get_password_hash.return_value = "hashed_secret"
     user_data = {
         "email": "user@example.com",
-        "preferences": "Django,Python"
+        "preferences": "Django,Python",
+        "password": "secret"
     }   
     mock_create_user.return_value = mock_user
     response = client.post("/users/create/", json=user_data)
@@ -61,19 +65,26 @@ def test_create_user(mock_create_user: MagicMock, mock_get_user_by_email: MagicM
     mock_create_user.assert_called_once()
 
 
-@patch("app.users.crud.get_users")
-def test_read_events_endpoint(mock_get_users: MagicMock, 
-                              client: TestClient, mock_users):
-    mock_get_users.return_value = mock_users
-    response = client.get("/users/all/")
+@patch("app.users.crud.decode_token")
+@patch("app.users.crud.get_user_by_email")
+def test_get_current_user_me_valid_token(mock_get_user_by_email: MagicMock, 
+                                         mock_decode_token: MagicMock, 
+                                         mock_user, client: TestClient):
+    mock_decode_token.return_value = {"sub": "johndoe@example.com"}
+    mock_get_user_by_email.return_value = mock_user
+    response = client.post("/users/me/", headers={"Authorization": "Bearer valid-token"})
     assert response.status_code == 200
-    assert len(response.json()) == 2
-    assert response.json()[0]["email"] == "user@example.com"
-    assert response.json()[1]["email"] == "user1@example.com"
+    assert response.json() == {
+        "email": "user@example.com",
+        "preferences": "Django,Python"
+    }
+    mock_decode_token.assert_called_once_with("valid-token")
 
 
+@patch("app.users.crud.decode_token")
 @patch("app.jobs.crud.get_jobs")
-def test_read_jobs_endpoint(mock_get_jobs: MagicMock, client: TestClient, db_session: Session):
+def test_read_jobs_endpoint(mock_get_jobs: MagicMock, mock_decode_token: MagicMock, client: TestClient, db_session: Session):
     mock_get_jobs.return_value.status_code = 200
-    response = client.get("/jobs/all/")
+    mock_decode_token.return_value = {"sub": "johndoe@example.com"}
+    response = client.get("/jobs/all/", headers={"Authorization": "Bearer valid-token"})
     assert response.status_code == 200

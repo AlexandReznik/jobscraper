@@ -16,7 +16,7 @@ def mock_user():
 
 @pytest.fixture
 def user_create():
-    return MagicMock(email="user@example.com", preferences="Django, Python")
+    return MagicMock(email="user@example.com", preferences="Django, Python", password="password")
 
 
 @patch("app.common.database.create_engine")
@@ -29,16 +29,13 @@ def test_get_user_by_email(db_session, mock_user):
 
 @patch("app.common.database.create_engine")
 def test_create_user(db_session, user_create):
-    db_session.add.return_value = None
-    db_session.commit.return_value = None
-    db_session.refresh.return_value = None
-    db_session.query().filter().first.return_value = None
-    created_user = crud.create_user(db=db_session, user=user_create)
+    with patch("app.users.crud.get_password_hash", return_value="hashedpassword"):
+        result = crud.create_user(db_session, user_create)
     db_session.add.assert_called_once()
     db_session.commit.assert_called_once()
     db_session.refresh.assert_called_once()
-    assert created_user.email == user_create.email
-    assert created_user.preferences == user_create.preferences
+    assert result.email == user_create.email
+    assert result.password == "hashedpassword"
 
 
 @patch("app.common.database.create_engine")
