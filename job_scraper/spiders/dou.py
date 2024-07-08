@@ -6,10 +6,9 @@ from ..items import JobScraperItem
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../')))
 
 
-class DjinniSpider(scrapy.Spider):
-    name = 'djinni'
-    allowed_domains = ['djinni.co']
-    start_urls = ['https://djinni.co/jobs/']
+class DouSpider(scrapy.Spider):
+    name = "dou"
+    start_urls = ['https://jobs.dou.ua/vacancies/']
 
     custom_settings = {
         'ITEM_PIPELINES': {
@@ -18,20 +17,18 @@ class DjinniSpider(scrapy.Spider):
     }
 
     def __init__(self):
-        super(DjinniSpider, self).__init__()
+        super(DouSpider, self).__init__()
         from app.common.database import SessionLocal
         self.session = SessionLocal()
 
     def parse(self, response):
-        job_items = response.css('li.list-jobs__item.job-list__item')
-        
-        for job in job_items:
-            company_name = response.urljoin(job.css('div.job-list-item__pic a::attr(href)').get())
-            job_title = job.css('a.job-list-item__link::text').get()
-            job_link = response.urljoin(job.css('a.job-list-item__link::attr(href)').get())
-            date_posted = job.css('span.mr-2.nobr::attr(data-original-title)').get()
-            job_location = job.css('div.job-list-item__job-info::text').get()
-
+        for job in response.css('li.l-vacancy.__hot'):
+            job_title = job.css('div.title a::text').get()
+            company_name = response.urljoin(job.css('a.company::attr(href)').get())
+            job_location = job.css('span.cities::text').get()
+            date_posted = job.css('div.date::text').get()
+            job_link = response.urljoin(job.css('div.title a::attr(href)').get())
+            
             company_name = company_name.strip() if company_name else None
             job_title = job_title.strip() if job_title else None
             date_posted = date_posted.strip() if date_posted else None
@@ -45,10 +42,10 @@ class DjinniSpider(scrapy.Spider):
                 location=job_location
             )
             yield item
-        next_page = response.css('ul.pagination li.page-item a.page-link::attr(href)').get()
-        if next_page:
-            next_page = response.urljoin(next_page)
-            yield scrapy.Request(next_page, callback=self.parse)
-    
+
+        next_page = response.css('div.more-btn a::attr(href)').get()
+        if next_page and next_page.startswith('http'):
+            yield response.follow(next_page, self.parse)
+
     def closed(self, reason):
         self.session.close()

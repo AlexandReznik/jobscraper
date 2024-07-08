@@ -83,7 +83,9 @@ def test_get_current_user_me_valid_token(mock_get_user_by_email: MagicMock,
 
 @patch("app.users.crud.decode_token")
 @patch("app.jobs.crud.get_jobs")
-def test_read_jobs_endpoint(mock_get_jobs: MagicMock, mock_decode_token: MagicMock, client: TestClient, db_session: Session):
+def test_read_jobs_endpoint(mock_get_jobs: MagicMock, 
+                            mock_decode_token: MagicMock, 
+                            client: TestClient, db_session: Session):
     mock_get_jobs.return_value.status_code = 200
     mock_decode_token.return_value = {"sub": "johndoe@example.com"}
     response = client.get("/jobs/all/", headers={"Authorization": "Bearer valid-token"})
