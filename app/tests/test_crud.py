@@ -50,7 +50,7 @@ def test_get_user(db_session, mock_user):
 def test_get_users(db_session, mock_user):
     db_users = [mock_user, MagicMock(id=2, email="anotheruser@example.com", 
                                      preferences="Flask, JavaScript")]
-    db_session.query().offset().limit().all.return_value = db_users
+    db_session.query().all.return_value = db_users
     result = crud.get_users(db_session)
-    db_session.query().offset().limit().all.assert_called_once()
+    db_session.query().all.assert_called_once()
     assert result == db_users
