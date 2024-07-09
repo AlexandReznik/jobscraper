@@ -9,9 +9,9 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI()
 
 
-@app.on_event("startup")
-async def startup_event():
-    subprocess.Popen(["python", "run_spiders.py"])
+# @app.on_event("startup")
+# async def startup_event():
+#     subprocess.Popen(["python", "run_spiders.py"])
 
 
 app.include_router(user_router, prefix="/users", tags=["users"])
