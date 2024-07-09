@@ -18,6 +18,7 @@ class Job(Base):
     def meets_preferences(self, preferences):
         preferences_list = [preference.strip() for preference in preferences.split(',')]
         for preference in preferences_list:
-            if preference.lower() in self.title.lower() or preference.lower() in self.location.lower():
+            if (preference.lower() in self.title.lower()
+                or preference.lower() in self.location.lower()):
                 return True
         return False
