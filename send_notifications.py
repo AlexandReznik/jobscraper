@@ -43,10 +43,13 @@ def send_notifications():
             filtered_jobs = filter_jobs_by_preferences(jobs_df, preferences)
             
             if not filtered_jobs.empty:
-                body = "\n\n".join([f"{job['title']} at {job['company']} in {job['location']} - {job['url']}" for index, job in filtered_jobs.iterrows()])
+                body = "\n\n".join(
+                    [f"{job['title']} at {job['company']} in {job['location']} - {job['url']}" 
+                     for index, job in filtered_jobs.iterrows()])
                 send_email("New Job Listings Based on Your Preferences", body, user.email)
     finally:
         db.close()
+
 
 if __name__ == "__main__":
     run_scrapy_spiders()
