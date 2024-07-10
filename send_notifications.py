@@ -20,14 +20,15 @@ def run_scrapy_spiders():
 
 
 def get_user_preferences(user_preferences):
-    preferences = pd.read_json(user_preferences)
+    preferences = [preference.strip() for preference in user_preferences.split(',')]
     return preferences
 
 
 def filter_jobs_by_preferences(jobs, preferences):
-    filtered_jobs = jobs
-    for column, value in preferences.items():
-        filtered_jobs = filtered_jobs[filtered_jobs[column].str.contains(value, na=False)]
+    filtered_jobs = []
+    for job in jobs:
+        if job.meets_preferences(preferences):
+            filtered_jobs.append(job)
     return filtered_jobs
 
 
@@ -36,16 +37,15 @@ def send_notifications():
     try:
         users = user_crud.get_users(db)
         jobs = job_crud.get_jobs(db, skip=0, limit=1000)
-        jobs_df = pd.DataFrame([job.__dict__ for job in jobs])
 
         for user in users:
             preferences = get_user_preferences(user.preferences)
-            filtered_jobs = filter_jobs_by_preferences(jobs_df, preferences)
-            
-            if not filtered_jobs.empty:
+            filtered_jobs = filter_jobs_by_preferences(jobs, preferences)
+
+            if filtered_jobs:
                 body = "\n\n".join(
-                    [f"{job['title']} at {job['company']} in {job['location']} - {job['url']}" 
-                     for index, job in filtered_jobs.iterrows()])
+                    [f"{job.title} - {job.url}"
+                     for job in filtered_jobs])
                 send_email("New Job Listings Based on Your Preferences", body, user.email)
     finally:
         db.close()

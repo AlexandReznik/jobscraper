@@ -11,7 +11,7 @@ app = FastAPI()
 
 # @app.on_event("startup")
 # async def startup_event():
-#     subprocess.Popen(["python", "run_spiders.py"])
+#     subprocess.Popen(["python", "send_notifications.py"])
 
 
 app.include_router(user_router, prefix="/users", tags=["users"])
