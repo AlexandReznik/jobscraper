@@ -8,11 +8,5 @@ from app.jobs.endpoints import router as jobs_router
 Base.metadata.create_all(bind=engine)
 app = FastAPI()
 
-
-# @app.on_event("startup")
-# async def startup_event():
-#     subprocess.Popen(["python", "send_notifications.py"])
-
-
 app.include_router(user_router, prefix="/users", tags=["users"])
 app.include_router(jobs_router, prefix="/jobs", tags=["jobs"])
