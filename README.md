@@ -31,12 +31,12 @@ uvicorn app.main:app --reload
 ## Endpoints
 
 Users:
-- POST /users/create/ - to create new a user
-- POST /users/me/ - to get authorized user
-- POST /users/token/ - to login and get token if successfully
-- PUT /users/preferences/ - to change preferences of logged user
+- POST docs/users/create/ - to create new a user
+- POST docs/users/me/ - to get authorized user
+- POST docs/users/token/ - to login and get token if successfully
+- PUT docs/users/preferences/ - to change preferences of logged user
 
 Jobs:
-- GET /jobs/all/ - to get list of jobs((doesn't availible for not authorized users))
-- GET /jobs/alert/ - to get list of jobs on email based on preferences of logged user
+- GET docs/jobs/all/ - to get list of jobs((doesn't availible for not authorized users))
+- GET docs/jobs/alert/ - to get list of jobs on email based on preferences of logged user
 
