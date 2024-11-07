@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, String
+
 from ..common.database import Base
-    
+
 
 class Job(Base):
     __tablename__ = "jobs"

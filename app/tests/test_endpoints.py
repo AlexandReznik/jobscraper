@@ -1,8 +1,10 @@
+from unittest.mock import MagicMock, patch
+
 import pytest
 from fastapi.testclient import TestClient
-from unittest.mock import patch, MagicMock
-from app.main import app
 from sqlalchemy.orm import Session
+
+from app.main import app
 from app.users import models
 
 

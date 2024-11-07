@@ -1,7 +1,9 @@
+from unittest.mock import MagicMock, patch
+
 import pytest
 from sqlalchemy.orm import Session
+
 from app.users import crud
-from unittest.mock import MagicMock, patch
 
 
 @pytest.fixture

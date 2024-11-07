@@ -1,6 +1,8 @@
-import scrapy
-import sys
 import os
+import sys
+
+import scrapy
+
 from ..items import JobScraperItem
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../')))

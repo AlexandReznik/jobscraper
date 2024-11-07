@@ -1,9 +1,10 @@
-import scrapy
-import sys
 import os
+import sys
+
+import scrapy
+
 from ..items import JobScraperItem
-from scrapy.crawler import CrawlerProcess
-from scrapy.utils.project import get_project_settings
+
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../')))
 

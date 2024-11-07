@@ -1,10 +1,12 @@
 import os
-from typing import Union
-from jose import jwt, JWTError
 from datetime import datetime, timedelta, timezone
+from typing import Union
+
 from dotenv import load_dotenv
-from app.common.oauth2 import oauth2_scheme
 from fastapi import Depends, HTTPException
+from jose import JWTError, jwt
+
+from app.common.oauth2 import oauth2_scheme
 
 load_dotenv()
 SECRET_KEY = os.getenv("SECRET_KEY")

@@ -1,12 +1,15 @@
-from fastapi import APIRouter, Depends, HTTPException, status
-from . import schemas, crud
-from sqlalchemy.orm import Session
-from typing import List
-from app.common.database import get_db
-from fastapi.security import OAuth2PasswordRequestForm
-from app.common import jwt
 from datetime import timedelta
-from typing import Annotated
+from typing import Annotated, List
+
+from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.security import OAuth2PasswordRequestForm
+from sqlalchemy.orm import Session
+
+from app.common import jwt
+from app.common.database import get_db
+
+from . import crud, schemas
+
 
 router = APIRouter()
 

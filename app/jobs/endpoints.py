@@ -1,16 +1,19 @@
-from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.orm import Session
-from app.common.database import get_db
-from . import crud, schemas
 from typing import List
-from app.users.crud import get_current_user
-from app.users.schemas import UserBase
-from app.common.email_utils import send_email
+
+from fastapi import APIRouter, Depends, HTTPException
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
+from sqlalchemy.orm import Session
+
+from app.common.database import get_db
+from app.common.email_utils import send_email
+from app.users.crud import get_current_user
+from app.users.schemas import UserBase
 from job_scraper.spiders.djinni import DjinniSpider
 from job_scraper.spiders.dou import DouSpider
 from job_scraper.spiders.lhh import LhhSpider
+
+from . import crud, schemas
 
 
 router = APIRouter()

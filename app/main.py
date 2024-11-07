@@ -1,8 +1,8 @@
-import subprocess
 from fastapi import FastAPI
-from app.common.database import engine, Base
-from app.users.endpoints import router as user_router
+
+from app.common.database import Base, engine
 from app.jobs.endpoints import router as jobs_router
+from app.users.endpoints import router as user_router
 
 
 Base.metadata.create_all(bind=engine)

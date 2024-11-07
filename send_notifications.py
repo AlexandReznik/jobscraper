@@ -1,11 +1,11 @@
-import pandas as pd
-from sqlalchemy.orm import Session
-from app.common.database import SessionLocal
-from app.jobs import crud as job_crud
-from app.users import crud as user_crud
-from app.common.email_utils import send_email
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
+from sqlalchemy.orm import Session
+
+from app.common.database import SessionLocal
+from app.common.email_utils import send_email
+from app.jobs import crud as job_crud
+from app.users import crud as user_crud
 from job_scraper.spiders.djinni import DjinniSpider
 from job_scraper.spiders.dou import DouSpider
 from job_scraper.spiders.lhh import LhhSpider

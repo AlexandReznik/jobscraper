@@ -1,12 +1,14 @@
-from sqlalchemy.orm import Session
-from . import models, schemas
-from ..common.security import verify_password
 from fastapi import Depends, HTTPException, status
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm import Session
+
+from app.common.database import get_db
 from app.common.jwt import decode_token
 from app.common.oauth2 import oauth2_scheme
-from app.common.database import get_db
 from app.common.security import get_password_hash
-from sqlalchemy.exc import IntegrityError
+
+from ..common.security import verify_password
+from . import models, schemas
 
 
 def create_user(db: Session, user: schemas.UserCreate):

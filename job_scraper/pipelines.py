@@ -1,6 +1,7 @@
-from app.jobs.models import Job
-from app.common.database import SessionLocal
 from sqlalchemy.exc import IntegrityError
+
+from app.common.database import SessionLocal
+from app.jobs.models import Job
 
 
 class DatabasePipeline:
@@ -8,7 +9,7 @@ class DatabasePipeline:
         self.create_table()
 
     def create_table(self):
-        from app.common.database import engine, Base
+        from app.common.database import Base, engine
         Base.metadata.create_all(bind=engine)
 
     def open_spider(self, spider):
