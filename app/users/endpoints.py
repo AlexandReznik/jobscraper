@@ -16,6 +16,19 @@ router = APIRouter()
 
 @router.post("/create/", response_model=schemas.User)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
+    """
+    Create a new user in the database.
+
+    Args:
+        user (UserCreate): The user data to create, including email and password.
+        db (Session): The database session dependency.
+
+    Returns:
+        User: The created user object.
+
+    Raises:
+        HTTPException: If the email is already registered or an error occurs during creation.
+    """
     db_user = crud.get_user_by_email(db, email=user.email)
     if db_user:
         raise HTTPException(status_code=400, detail="Email already registered")
@@ -29,6 +42,15 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
 def read_users_me(
     current_user: Annotated[schemas.UserBase, Depends(crud.get_current_user)],
 ):
+    """
+    Retrieve the current authenticated user information.
+
+    Args:
+        current_user (UserBase): The current user, retrieved via the authentication dependency.
+
+    Returns:
+        UserBase: The authenticated user's base information.
+    """
     return current_user
 
 
@@ -37,6 +59,19 @@ def login_for_access_token(
     db: Session = Depends(get_db),
     form_data: OAuth2PasswordRequestForm = Depends(),
 ) -> schemas.UserToken:
+    """
+    Authenticate the user and generate a JWT access token.
+
+    Args:
+        db (Session): The database session dependency.
+        form_data (OAuth2PasswordRequestForm): The login form data containing username and password.
+
+    Returns:
+        UserToken: The generated JWT access token and token type.
+
+    Raises:
+        HTTPException: If authentication fails due to incorrect username or password.
+    """
     user = crud.authenticate_user(db=db, email=form_data.username, password=form_data.password)
     if not user:
         raise HTTPException(
@@ -57,6 +92,17 @@ def update_preferences(
     current_user: schemas.UserBase = Depends(crud.get_current_user),
     db: Session = Depends(get_db)
 ):
+    """
+    Update the preferences of the current authenticated user.
+
+    Args:
+        preferences (UserPreferences): The new preferences data for the user.
+        current_user (UserBase): The current authenticated user, retrieved via the authentication dependency.
+        db (Session): The database session dependency.
+
+    Returns:
+        UserPreferences: The updated preferences for the user.
+    """
     updated_preferences = crud.update_user_preferences(
         db=db,
         user=current_user,

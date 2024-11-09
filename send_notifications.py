@@ -12,6 +12,12 @@ from job_scraper.spiders.lhh import LhhSpider
 
 
 def run_scrapy_spiders():
+    """
+    Run all configured Scrapy spiders for job scraping.
+
+    This function initializes a CrawlerProcess with project settings
+    and starts crawling with DjinniSpider, DouSpider, and LhhSpider.
+    """
     process = CrawlerProcess(settings=get_project_settings())
     process.crawl(DjinniSpider)
     process.crawl(DouSpider)
@@ -20,11 +26,30 @@ def run_scrapy_spiders():
 
 
 def get_user_preferences(user_preferences):
+    """
+    Parse user preferences from a comma-separated string.
+
+    Args:
+        user_preferences (str): A string containing comma-separated user preferences.
+
+    Returns:
+        List[str]: A list of cleaned, individual preferences.
+    """
     preferences = [preference.strip() for preference in user_preferences.split(',')]
     return preferences
 
 
 def filter_jobs_by_preferences(jobs, preferences):
+    """
+    Filter jobs by user preferences.
+
+    Args:
+        jobs (list): A list of job objects.
+        preferences (list): A list of user preference strings.
+
+    Returns:
+        List: A list of job objects that meet user preferences.
+    """
     filtered_jobs = []
     for job in jobs:
         if job.meets_preferences(preferences):
@@ -33,6 +58,15 @@ def filter_jobs_by_preferences(jobs, preferences):
 
 
 def send_notifications():
+    """
+    Send job notification emails to users based on their preferences.
+
+    This function retrieves users and jobs from the database,
+    filters the jobs based on each user's preferences, and sends an
+    email notification if matching jobs are found.
+
+    Closes the database session after sending notifications.
+    """
     db: Session = SessionLocal()
     try:
         users = user_crud.get_users(db)

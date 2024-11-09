@@ -19,6 +19,16 @@ Base.metadata.create_all(bind=engine)
 
 
 def get_db():
+    """
+    Provides a database session to interact with the database.
+
+    This function is a generator that yields a new session to interact
+    with the database. It automatically closes the session after use,
+    ensuring no open connections remain.
+
+    Yields:
+        Session: A SQLAlchemy SessionLocal instance for database interaction.
+    """
     db = SessionLocal()
     try:
         yield db
