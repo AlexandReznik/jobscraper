@@ -22,8 +22,9 @@ def create_token(data: dict, expires_delta: Union[timedelta, None] = None):
 
     Args:
         data (dict): The data to encode in the JWT token.
-        expires_delta (Union[timedelta, None], optional): The duration for which the token is valid. 
-                                                        If None, the token expires in 15 minutes by default.
+        expires_delta (Union[timedelta, None], optional): 
+            The duration for which the token is valid. 
+            If None, the token expires in 15 minutes by default.
 
     Returns:
         str: The encoded JWT token as a string.

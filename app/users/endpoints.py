@@ -96,8 +96,11 @@ def update_preferences(
     Update the preferences of the current authenticated user.
 
     Args:
-        preferences (UserPreferences): The new preferences data for the user.
-        current_user (UserBase): The current authenticated user, retrieved via the authentication dependency.
+        preferences (UserPreferences): 
+            The new preferences data for the user.
+        current_user (UserBase): 
+            The current authenticated user, 
+            retrieved via the authentication dependency.
         db (Session): The database session dependency.
 
     Returns:

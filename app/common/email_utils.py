@@ -8,7 +8,8 @@ def send_email(subject, body, to_email):
     """
     Sends an email using SMTP with SSL encryption.
 
-    This function sends an email with a specified subject and body to a recipient's email address
+    This function sends an email with a specified subject and 
+    body to a recipient's email address
     using environment variables for the sender's email and password.
 
     Args:
@@ -25,7 +26,8 @@ def send_email(subject, body, to_email):
         An error message if sending fails.
 
     Exceptions:
-        Any exceptions raised during the SMTP connection or email sending process will be caught and printed.
+        Any exceptions raised during the SMTP connection or 
+        email sending process will be caught and printed.
     """
     from_email = os.getenv("FROM_EMAIL")
     from_password = os.getenv("PASSWORD")

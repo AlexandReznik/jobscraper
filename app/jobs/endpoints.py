@@ -78,9 +78,8 @@ def send_jobs_email(jobs: List[schemas.JobBase], user_email: str):
     
 
 @router.get("/all/", response_model=List[schemas.Job])
-def read_jobss(skip: int = 0, limit: int = 50, 
-                db: Session = Depends(get_db),
-                current_user: UserBase = Depends(get_current_user)):
+def read_jobss(skip: int = 0, limit: int = 50, db: Session = Depends(get_db), 
+               current_user: UserBase = Depends(get_current_user)):
     """
     Retrieve a paginated list of jobs from the database.
 
